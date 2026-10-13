@@ -10,6 +10,7 @@ ActX
     <br/>
     <strong>旨在帮助任何Java企业项目接入专属的Ai智能体</strong>
 </p>
+
 <p align="center">
     <a target="_blank" href="LICENSE">
 		<img src="https://img.shields.io/:License-Apache2-blue.svg" alt="Apache 2" />
@@ -27,4 +28,24 @@ ActX
 		<img src="https://img.shields.io/github/stars/jiang2992/ActX.svg?style=flat&logo=github" alt="github star"/>
 	</a>
 </p>
+
 ##### 语言： 中文 | [English](README_EN.md) 
+
+<hr />
+
+## 简介
+
+
+## 功能展示
+
+
+## 核心能力
+
+
+## 快速开始
+
+
+## 功能扩展
+
+
+## 联系作者
