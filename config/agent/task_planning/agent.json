@@ -1,0 +1,16 @@
+{
+  "id": "task-planning-agent",
+  "name": "Task Planning Agent",
+  "description": "Planning the complexity of user tasks.",
+  "model": "main-pro-json",
+  "systemPromptFile": "./config/agent/task_planning/prompt.md",
+  "privatize": true,
+  "plugins": [
+    {
+      "class": "com.bin.actx.plugin.core.file.FilePlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.business.BusinessReferPlugin"
+    }
+  ]
+}

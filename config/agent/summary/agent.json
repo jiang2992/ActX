@@ -1,0 +1,13 @@
+{
+  "id": "summary-agent",
+  "name": "Summary Agent",
+  "description": "Used for summarizing and condensing conversations, etc.",
+  "model": "main-pro",
+  "systemPromptFile": "./config/agent/summary/prompt.md",
+  "privatize": true,
+  "plugins": [
+    {
+      "class": "com.bin.actx.plugin.core.file.FilePlugin"
+    }
+  ]
+}

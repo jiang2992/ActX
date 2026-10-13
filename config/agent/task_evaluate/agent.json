@@ -1,0 +1,13 @@
+{
+  "id": "task-evaluate-agent",
+  "name": "Task Evaluate Agent",
+  "description": "Evaluate the complexity of user tasks.",
+  "model": "main-pro-json",
+  "systemPromptFile": "./config/agent/task_evaluate/prompt.md",
+  "privatize": true,
+  "plugins": [
+    {
+      "class": "com.bin.actx.plugin.core.file.FilePlugin"
+    }
+  ]
+}

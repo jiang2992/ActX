@@ -1,0 +1,33 @@
+{
+  "id": "chat-agent",
+  "name": "Default Chat Agent",
+  "description": "The system's global default chat agent",
+  "model": "main-pro",
+  "systemPromptFile": "./config/agent/chat/prompt.md",
+  "privatize": true,
+  "toolkits": "*",
+  "toolMode": "dynamic",
+  "plugins": [
+    {
+      "class": "com.bin.actx.plugin.core.memory.SessionMemoryPlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.file.FilePlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.sandbox.SandboxPlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.summary.SummaryPlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.task.TaskPlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.business.BusinessReferPlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.mcp.McpPlugin"
+    }
+  ]
+}

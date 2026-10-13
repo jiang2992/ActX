@@ -1,0 +1,64 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: actx
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 100MB
+  ai:
+    retry:
+      max-attempts: 1          # 最大重试次数
+      backoff:
+        initial-interval: 2s   # 初始退避间隔，2秒
+        multiplier: 2          # 退避倍数，每次重试间隔乘以 2
+        max-interval: 30s      # 最大退避间隔，30秒
+    # 每个模型厂商需要再这里随便添加个key，否则SpringAi会报错
+    openai:
+      api-key: "sk-dummy-key-for-startup"
+    zhipuai:
+      api-key: "sk-dummy-key-for-startup"
+    deepseek:
+      api-key: "sk-dummy-key-for-startup"
+
+actx:
+
+  # 沙箱配置
+  sandbox:
+    enable: true
+    domain: 'localhost:18080'
+    api-key: "actx_sandbox_key"
+    fast-sandbox-pool:
+      image: 'opensandbox/code-interpreter:v1.1.0'
+      max-idle: 3
+      idle-timeout: 86400
+      sandbox-timeout: 300
+
+  # 应用配置文件夹路径
+  config:
+    path: ./config/
+
+  # 存储相关
+  storage:
+    local:
+      dir: ./db/
+    graph:
+      url: bolt://localhost:7687
+      user: neo4j
+      password: actx_neo4j_password
+    file:
+      dir: ./file/
+
+  # 完整请求日志记录
+  log:
+    path: ./log/
+    full-request-logging: false
+
+logging:
+  level:
+    com.bin.actx: debug
+    org.springframework.ai: info
+    org.springframework.web.reactive.function.client: info
+

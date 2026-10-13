@@ -1,0 +1,17 @@
+{
+  "id": "coding-task-worker",
+  "name": "Coding Task Worker Agent",
+  "description": "Skilled at completing coding tasks. And it can also execute the code in a sandbox environment.",
+  "model": "main-pro-unthink",
+  "systemPromptFile": "./config/agent/coding_task/prompt.md",
+  "toolkits": "*",
+  "toolMode": "dynamic",
+  "plugins": [
+    {
+      "class": "com.bin.actx.plugin.core.file.FilePlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.sandbox.SandboxPlugin"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+[server]
+host = "127.0.0.1"
+port = 18080
+max_sandbox_timeout_seconds = 86400
+
+# Optional: Uncomment to enable API key authentication
+api_key = "actx_sandbox_key"
+# If api_key stays empty, startup requires explicit acknowledgment:
+# - Interactive TTY: type YES when prompted
+# - Non-interactive: set OPENSANDBOX_INSECURE_SERVER=YES
+
+[log]
+level = "INFO"
+
+[runtime]
+type = "docker"
+execd_image = "opensandbox/execd:v1.0.20"
+
+[storage]
+# Allowlist of host path prefixes permitted for bind mounts.
+# If empty, all host paths are allowed (not recommended for production).
+# Example: allowed_host_paths = ["/data/opensandbox", "/tmp/sandbox"]
+allowed_host_paths = ["/Users/bin/Work/Project/Bin/actx/file"]
+
+# Default storage size for auto-created Kubernetes PVCs (when caller omits size).
+volume_default_size = "1Gi"
+
+[store]
+type = "sqlite"
+path = "~/.opensandbox/opensandbox.db"
+
+[docker]
+network_mode = "bridge"
+# Drop dangerous capabilities and block privilege escalation
+drop_capabilities = ["AUDIT_WRITE", "MKNOD", "NET_ADMIN", "NET_RAW", "SYS_ADMIN", "SYS_MODULE", "SYS_PTRACE", "SYS_TIME", "SYS_TTY_CONFIG"]
+no_new_privileges = true
+# Optional: set an AppArmor profile name (e.g., "docker-default") when AppArmor is enabled
+apparmor_profile = ""
+# Limit process count to reduce host impact from fork bombs; set to null to disable
+pids_limit = 4096
+# Seccomp profile: empty string uses Docker default; set to an absolute path for a custom profile
+seccomp_profile = ""
+
+[ingress]
+mode = "direct"
+
+[egress]
+image = "opensandbox/egress:v1.1.3"
+mode = "dns"
+
+# 🧪 [EXPERIMENTAL] Renew-on-access. Off by default — see server/README.md.
+[renew_intent]
+enabled = false
+min_interval_seconds = 60

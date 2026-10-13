@@ -1,0 +1,18 @@
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j
+    ports:
+      # HTTP 端口
+      - "7474:7474"
+      # Bolt 端口
+      - "7687:7687"
+    volumes:
+      - ./data:/data
+      - ./logs:/logs
+      - ./conf:/conf
+      - ./plugins:/plugins
+    environment:
+      # 设置初始用户名和密码，格式为 <username>/<password>
+      - NEO4J_AUTH=neo4j/actx_neo4j_password
+      - NEO4J_PLUGINS='["genai"]'

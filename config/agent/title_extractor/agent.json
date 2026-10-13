@@ -1,0 +1,9 @@
+{
+  "id": "title-extract-agent",
+  "name": "Title Extract Agent",
+  "description": "Used for extracting titles from conversations.",
+  "model": "main-pro-unthink",
+  "systemPromptFile": "./config/agent/title_extractor/prompt.md",
+  "privatize": true,
+  "plugins": []
+}

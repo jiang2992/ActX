@@ -1,0 +1,13 @@
+{
+  "id": "task-dispatcher-agent",
+  "name": "Task Dispatcher Agent",
+  "description": "The global scheduler of the task, responsible for the progress and decision-making of task execution",
+  "model": "main-pro-json",
+  "systemPromptFile": "./config/agent/task_dispatcher/prompt.md",
+  "privatize": true,
+  "plugins": [
+    {
+      "class": "com.bin.actx.plugin.core.file.FilePlugin"
+    }
+  ]
+}

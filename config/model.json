@@ -1,0 +1,45 @@
+{
+  "chatModels": [
+    {
+      "id": "main-pro",
+      "supplierName": "OpenAi",
+      "modelName": "qwen3.7-plus",
+      "baseUrl": "https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+      "apiKey": "you api key",
+      "temperature": 0.5,
+      "maxTokens": 1000000,
+      "enableThink": true
+    },
+    {
+      "id": "main-pro-json",
+      "supplierName": "OpenAi",
+      "modelName": "qwen3.7-plus",
+      "baseUrl": "https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+      "apiKey": "you api key",
+      "temperature": 0.5,
+      "maxTokens": 1000000,
+      "enableThink": false,
+      "responseFormat": "json"
+    },
+    {
+      "id": "main-pro-unthink",
+      "supplierName": "OpenAi",
+      "modelName": "qwen3.7-plus",
+      "baseUrl": "https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+      "apiKey": "you api key",
+      "temperature": 0.5,
+      "maxTokens": 1000000,
+      "enableThink": false
+    }
+  ],
+  "embeddingModels": [
+    {
+      "id": "embedding-model",
+      "supplierName": "OpenAi",
+      "modelName": "qwen3.7-text-embedding",
+      "baseUrl": "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      "apiKey": "you api key",
+      "dimensions": 1536
+    }
+  ]
+}

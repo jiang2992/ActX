@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ActX Chat</title>
+  <link rel="icon" type="image/png" href="/img/logo.png">
+  <link rel="stylesheet" href="/css/chat.css">
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+</head>
+<body>
+<div id="app">
+  <!-- Toast 通知 -->
+  <div v-if="toastMessage" class="toast" :class="toastType">{{ toastMessage }}</div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" :class="{ collapsed: !sidebarVisible }">
+    <div class="sidebar-inner">
+    <div class="sidebar-header">
+      <img src="/img/logo.png" class="logo" alt="ActX">
+      <h2>ActX</h2>
+      <button class="collapse-sidebar" @click="toggleSidebar" title="收起侧边栏">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+    </div>
+    <div class="menu-list">
+      <div class="menu-item"
+           :class="{ active: activeFeature === null && currentSessionId === null }"
+           @click="newChat">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+        </svg>
+        <span class="menu-name">新建会话</span>
+      </div>
+      <div v-for="feature in features"
+           :key="feature.id"
+           class="menu-item"
+           :class="{ active: feature.id === activeFeature }"
+           @click="switchFeature(feature.id)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+        </svg>
+        <span class="menu-name">{{ feature.name }}</span>
+        <button v-if="feature.id === 'business_discover'" class="feature-more-btn"
+                :data-feature-menu-btn="feature.id"
+                @click.stop="toggleFeatureMenu(feature.id)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="5" cy="12" r="2"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <circle cx="19" cy="12" r="2"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="session-list-title">最近</div>
+    <div class="session-list" ref="sessionListRef">
+      <div v-for="session in sessions"
+           :key="session.sessionId"
+           class="session-item"
+           :class="{ active: session.sessionId === currentSessionId }"
+           @click="switchSession(session.sessionId)">
+        <span class="session-name">{{ session.name }}</span>
+        <button class="session-more-btn" :data-session-menu-btn="session.sessionId"
+                @click.stop="toggleSessionMenu(session.sessionId)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="5" cy="12" r="2"></circle>
+            <circle cx="12" cy="12" r="2"></circle>
+            <circle cx="19" cy="12" r="2"></circle>
+          </svg>
+        </button>
+      </div>
+    </div>
+    </div>
+  </aside>
+
+  <!-- 更多菜单：挂载到body避免被侧边栏overflow裁剪，fixed定位跟随触发按钮 -->
+  <Teleport to="body">
+    <div v-if="openMenuSessionId" ref="sessionMenuRef" class="session-menu"
+         :style="sessionMenuStyle" @click.stop>
+      <div class="session-menu-item">重命名</div>
+      <div class="session-menu-item danger" @click="deleteSession(openMenuSessionId)">删除</div>
+    </div>
+  </Teleport>
+  <Teleport to="body">
+    <div v-if="openFeatureMenuId" ref="featureMenuRef" class="feature-menu"
+         :style="featureMenuStyle" @click.stop>
+      <div class="session-menu-item" @click="resetBusinessSession">重置会话</div>
+    </div>
+  </Teleport>
+
+  <!-- Main Content -->
+  <div class="main">
+    <header class="header">
+      <div class="header-left">
+        <button v-if="!sidebarVisible" class="toggle-sidebar" @click="toggleSidebar">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div v-if="activeFeature === 'business_discover'" class="feature-title">
+          <div class="feature-title-main">
+            <span class="feature-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44A2.5 2.5 0 0 1 4 17.5a2.5 2.5 0 0 1-2-2.45V12a2.5 2.5 0 0 1 2-2.45A2.5 2.5 0 0 1 4 4.5A2.5 2.5 0 0 1 6.5 2z"></path>
+                <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44A2.5 2.5 0 0 0 20 17.5a2.5 2.5 0 0 0 2-2.45V12a2.5 2.5 0 0 0-2-2.45A2.5 2.5 0 0 0 20 4.5A2.5 2.5 0 0 0 17.5 2z"></path>
+              </svg>
+            </span>
+            <span class="feature-title-text">业务认知</span>
+          </div>
+          <div class="feature-title-desc">帮助Actx将业务知识沉淀为结构化记忆，建立业务认知层</div>
+        </div>
+        <div v-else-if="currentSessionTitle" class="session-title">
+          <span class="session-title-text">{{ currentSessionTitle }}</span>
+        </div>
+<!--        <span class="header-title">AI 助手</span>-->
+      </div>
+      <div class="header-actions">
+      </div>
+    </header>
+
+    <!-- Messages Area -->
+    <div class="messages-area" ref="messagesAreaRef" @scroll="handleScroll">
+      <div class="messages-container">
+        <!-- Welcome Screen -->
+        <div v-if="messages.length === 0" class="welcome">
+          <img src="/img/logo.png" class="welcome-logo" alt="ActX">
+          <p v-if="activeFeature === 'business_discover'">你好，我是业务认知Agent<br>已经准备就绪，随时从数据源、文档或代码库开始</p>
+          <p v-else>你好，我是智能助理 ActX<br>有什么想法尽管安排，我们立马开始</p>
+        </div>
+
+        <!-- Message List - 流水线模式 -->
+        <template v-for="gMsg in groupedMessages" :key="gMsg._uid">
+
+          <div class="message-row question">
+            <svg v-if="gMsg.sendError || (gMsg.done && gMsg.items.length === 0)" class="send-error-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <div class="message-bubble user">
+              <div v-if="gMsg.question.attachments && gMsg.question.attachments.length > 0" class="attachment-badge">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path
+                      d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+                </svg>
+                包含{{ gMsg.question.attachments.length }}个附件
+              </div>
+              {{ gMsg.question.content }}
+            </div>
+            <div class="avatar user">U</div>
+          </div>
+
+          <!-- AI应答加载状态：刚发送尚未收到任何SSE事件时显示点点点 -->
+          <div v-if="!gMsg.done && gMsg.items.length === 0 && !gMsg.hasReceivedResponse && !gMsg.sendError" class="message-row">
+            <img src="/img/logo.png" class="avatar ai" alt="AI">
+            <div class="message-bubble ai loading-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+
+          <!-- AI应答消息：有内容时显示应答泡泡框 -->
+          <div class="message-row" v-if="gMsg.items && gMsg.items.length > 0" >
+            <img src="/img/logo.png" class="avatar ai" alt="AI">
+            <div class="message-bubble ai combined">
+              <template v-for="(group, gIdx) in gMsg.groups" :key="group.key || (group.item ? (group.item.id || group.item.type) : gIdx)">
+                <div v-if="group.type === 'explore_group'">
+                  <span class="explore-toggle" @click="toggleExploreGroup(group.key)">
+                    <span v-if="group.isStreaming" class="explore-status exploring">探索中</span>
+                    <span v-else-if="group.toolCallCount > 0" class="explore-status">已探索：{{ group.toolCallCount }}个工具调用</span>
+                    <span v-else class="explore-status">已探索：{{ group.thinkingCount }}条思考</span>
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="explore-chevron" :class="{ 'expanded': isExploreGroupExpanded(group.key) }">
+                      <polyline points="9 6 15 12 9 18"></polyline>
+                    </svg>
+                  </span>
+                  <div v-show="isExploreGroupExpanded(group.key)" class="explore-group-content">
+                    <template v-for="(item, eIdx) in group.items" :key="item.id || item.type || eIdx">
+                      <div v-if="item.type === 'thinking'" class="thinking-section">
+                        {{ item.content }}
+                      </div>
+                      <div v-if="item.type === 'tool_call'" class="tool-item">
+                        <div class="tool-header" @click="item.expanded = !item.expanded">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
+                          </svg>
+                          <span class="tool-name">{{ item.name }}</span>
+                          <svg v-if="item.result" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="3"
+                               class="check-icon">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                          <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6c757d" stroke-width="2.5"
+                               class="spinner-icon">
+                            <circle cx="12" cy="12" r="9" stroke-dasharray="14" stroke-dashoffset="0" stroke-linecap="round"></circle>
+                          </svg>
+                        </div>
+                        <div v-if="item.expanded && (item.arguments || item.result)" class="tool-detail">
+                          <div v-if="item.arguments" class="tool-section">
+                            <div class="tool-section-label">
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                              </svg>
+                              参数
+                            </div>
+                            <pre class="tool-code-block">{{ item.arguments }}</pre>
+                          </div>
+                          <div v-if="item.result" class="tool-section">
+                            <div class="tool-section-label">
+                              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                              </svg>
+                              结果
+                            </div>
+                            <pre class="tool-code-block">{{ item.result }}</pre>
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+                <template v-else>
+                  <div v-if="group.item.type === 'tell'" class="tell-section">{{ group.item.content }}</div>
+
+                  <div v-if="group.item.type === 'answer'" class="answer-section" v-html="getMarkdownContent(group.item.content)"></div>
+
+                  <div v-if="group.item.type === 'task_order'" class="tool-item task-order-section">
+                    <div class="tool-header" @click="group.item.expanded = !group.item.expanded">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 11l3 3L22 4"></path>
+                        <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                      </svg>
+                      <span class="task-order-title">任务清单：{{ group.item.summary }}</span>
+                      <svg v-if="group.item.status === 'completed'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#28a745"
+                           stroke-width="3" class="check-icon">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                      <svg v-else-if="group.item.status === 'running'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6c757d"
+                           stroke-width="2.5" class="spinner-icon">
+                        <circle cx="12" cy="12" r="9" stroke-dasharray="14" stroke-dashoffset="0" stroke-linecap="round"></circle>
+                      </svg>
+                      <svg v-else-if="group.item.status === 'termination'" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc3545"
+                           stroke-width="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
+                    </div>
+                    <div v-if="group.item.expanded" class="tool-detail task-order-content">
+                      <div v-for="(group, groupIndex) in group.item.taskGroups" :key="group.title" class="task-group">
+                        <div class="task-group-header" @click="group.expanded = !group.expanded">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                               class="expand-icon" :class="{ 'expanded': group.expanded }">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
+                          <span class="task-group-title">{{ group.title }}</span>
+                          <span class="task-count">{{ group.subTasks.length }}个子任务</span>
+                          <svg v-if="group.subTasks.length > 0 && group.subTasks.every(st => st.status === 'completed')" width="14"
+                               height="14" viewBox="0 0 24 24" fill="none" stroke="#28a745" stroke-width="3" class="group-check-icon">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        </div>
+                        <div v-if="group.expanded" class="sub-task-list">
+                          <div v-for="(subTask, subIndex) in group.subTasks" :key="subTask.code" class="sub-task-item">
+                            <div class="sub-task-code">{{ subTask.code }}</div>
+                            <div class="sub-task-description">{{ subTask.description }}</div>
+                            <div class="sub-task-agent">
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                              </svg>
+                              {{ subTask.assignedAgentName }}
+                            </div>
+                            <div v-if="subTask.status" class="sub-task-status" :class="'status-' + subTask.status">
+                              <svg v-if="subTask.status === 'running'" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#007AFF"
+                                   stroke-width="2.5" class="spinner-icon">
+                                <circle cx="12" cy="12" r="9" stroke-dasharray="14" stroke-dashoffset="0" stroke-linecap="round"></circle>
+                              </svg>
+                              <svg v-else-if="subTask.status === 'completed'" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                   stroke="#28a745" stroke-width="3">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                              </svg>
+                              <svg v-else-if="subTask.status === 'termination'" width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                   stroke="#dc3545" stroke-width="2.5">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                              </svg>
+                              <span class="status-label">{{ subTask.status === 'running' ? '执行中' : subTask.status === 'completed' ? '已完成'
+                                  : '已终止' }}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </template>
+              <span v-if="!gMsg.done" class="cursor"></span>
+            </div>
+          </div>
+
+
+          <!-- Error Message -->
+          <template v-if="gMsg.items.length > 0 && gMsg.items[gMsg.items.length - 1].type === 'error'">
+            <div class="error-message">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+              <span>{{ gMsg.items[gMsg.items.length - 1].content }}</span>
+            </div>
+          </template>
+
+          <!-- Stop Message -->
+          <template v-if="gMsg.items.length > 0 && gMsg.items[gMsg.items.length - 1].type === 'stop'">
+            <div class="stop-message">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+              </svg>
+              <span>{{ gMsg.items[gMsg.items.length - 1].content }}</span>
+            </div>
+          </template>
+        </template>
+        <div style="padding-bottom: 5px" ></div>
+      </div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+      <div class="input-container"
+           @dragover.prevent
+           @drop.prevent="handleDrop">
+        <!-- AttachmentPreview Upload Section -->
+        <div v-if="attachments.length > 0" class="attachment-list">
+          <div v-for="(file, index) in attachments" :key="index" class="attachment-item">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+              <polyline points="13 2 13 9 20 9"></polyline>
+            </svg>
+            <span class="attachment-name">{{ file.name }}</span>
+            <button class="attachment-remove" @click="removeAttachment(index)">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="input-wrapper">
+          <button class="attach-btn" @click="triggerFileUpload" :disabled="isStreaming" title="添加附件">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                  d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path>
+            </svg>
+          </button>
+          <input type="file" ref="fileInputRef" @change="handleFileSelect" style="display: none" multiple>
+          <textarea
+              id="messageInput"
+              v-model="inputMessage"
+              placeholder="您想要做点什么..."
+              rows="1"
+              @keydown.enter.exact.prevent="handleEnterKey"
+              @input="autoResizeTextarea"
+              @compositionstart="isComposing = true"
+              @compositionend="isComposing = false"
+              @paste.prevent="handlePaste"
+              ref="inputRef"></textarea>
+          <button
+              class="send-btn"
+              @click="handleSendClick"
+              :disabled="isStreaming && stopRequested">
+            <svg v-if="isStreaming" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+              <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+            </svg>
+            <svg v-else viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/chat.js"></script>
+</body>
+</html>

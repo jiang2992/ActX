@@ -1,0 +1,21 @@
+{
+  "id": "business-discover-agent",
+  "name": "Enterprise Business Discover Agent",
+  "description": "Responsible for the investigation and analysis of the database, ensuring a complete understanding of the business relationships, and storing these business relationships.",
+  "model": "main-pro",
+  "systemPromptFile": "./config/agent/business_discover/prompt.md",
+  "privatize": true,
+  "toolkits": "知识查询,知识维护,数据源,文件管理,网络",
+  "toolMode": "static",
+  "plugins": [
+    {
+      "class": "com.bin.actx.plugin.core.memory.SessionMemoryPlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.file.FilePlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.summary.SummaryPlugin"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "scenes": {
+    "chat": {
+      "agent": "chat-agent"
+    },
+    "titleExtract": {
+      "agent": "title-extract-agent"
+    },
+    "summary": {
+      "agent": "summary-agent"
+    },
+    "taskEvaluate": {
+      "agent": "task-evaluate-agent"
+    },
+    "taskPlanning": {
+      "agent": "task-planning-agent"
+    },
+    "taskDispatcher": {
+      "agent": "task-dispatcher-agent"
+    },
+    "businessDiscover": {
+      "agent": "business-discover-agent"
+    }
+  }
+}

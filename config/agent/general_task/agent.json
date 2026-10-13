@@ -1,0 +1,17 @@
+{
+  "id": "general-task-worker",
+  "name": "General Task Worker Agent",
+  "description": "Can complete most daily tasks and business inquiries.",
+  "model": "main-pro-unthink",
+  "systemPromptFile": "./config/agent/general_task/prompt.md",
+  "toolkits": "*",
+  "toolMode": "dynamic",
+  "plugins": [
+    {
+      "class": "com.bin.actx.plugin.core.file.FilePlugin"
+    },
+    {
+      "class": "com.bin.actx.plugin.core.business.BusinessReferPlugin"
+    }
+  ]
+}
