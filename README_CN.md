@@ -96,17 +96,20 @@ ActX 是一个基于 Spring Boot + Spring AI 构建的 **Java 通用业务智能
 
 ## 核心能力
 
-| 能力           | 说明                                                             |
-|--------------|----------------------------------------------------------------|
-| **Agent 定义** | 通过 `agent.json` + `prompt.md` 声明式定义 Agent，支持模型、工具、插件的灵活配置      |
-| **任务编排**     | 多 Agent 协作的 Task Flow：评估 → 规划 → 调度 → 执行 → 总结，全流程可控             |
-| **插件体系**     | 内置 Memory、File、Sandbox、MCP、Summary、Task、Business 等核心插件，支持自定义扩展 |
-| **工具包**      | 支持动态工具注册，Agent 可按需调用工具，实现数据库查询、网络请求、代码执行等能力                    |
-| **消息通道**     | 提供 Chat / Task / SSE / Direct 等多种消息通道，适配不同交互场景                 |
-| **配置热加载**    | 所有配置基于 JSON 文件，修改后自动生效，无需重启服务                                  |
-| **多模型管理**    | 支持同时配置多个大模型（Chat + Embedding），Agent 可按需引用不同模型                  |
-| **沙箱隔离**     | 基于 OpenSandbox 提供安全隔离的代码执行环境，支持快速沙箱池化                          |
-| **知识图谱**     | 集成 Neo4j，支持业务关系的自动发现、存储与检索                                     |
+| 能力         | 说明                                                                   |
+|------------|----------------------------------------------------------------------|
+| **多模型**    | 基于 SpringAi 框架，支持市面上所有主流的大模型                                         |
+| **多Agent** | 多Agent协作，各司其职，内置9个核心Agent，支持自定义管理                                    |
+| **渐进式工具**  | 工具采用二阶段加载，任务过程按需加载工具包                                                |
+| **会话记忆**   | 基于会话的上下文记忆，长会话自动总结摘要                                                 |
+| **MCP管理**  | 支持多模式MCP工具接入，连接外部 MCP 工具服务器                                          |
+| **复杂任务**   | 完整的任务执行体系，支持任务评估、规划、调度、执行、评审、总结，不同的子任务由最匹配的Agent负责，完善的任务评估、节点评审、重试机制 |
+| **文件管理**   | 为Agent提供完整的文件操作支持，完善的文件权限控制                                          |
+| **沙箱隔离**   | 基于 OpenSandbox 提供安全隔离的代码执行环境，支持快速沙箱和短期沙箱                             |
+| **业务认知**   | 支持通过数据源、业务资料等信息进行业务知识沉淀，构建知识图谱                                       |
+| **知识查询**   | 基于知识图谱进行数据查询，支持语句的安全审查、权限控制等                                         |
+| **扩展插件**   | 通过统一标准接口实现智能体的能力扩展，不同Agent可以配置不同的插件                                  |
+| **消息通道**   | 消息通道扩展支持，由消息事件驱动，支持快速整合飞书、钉钉、微信或其他企业内部系统                             |
 
 ## 快速开始
 
@@ -115,7 +118,7 @@ ActX 是一个基于 Spring Boot + Spring AI 构建的 **Java 通用业务智能
 - JDK 17+
 - Maven 3.6+
 - Neo4j（可选，用于知识图谱存储）
-- Docker（可选，用于沙箱代码执行）
+- Docker、OpenSandbox（可选，用于沙箱代码执行）
 
 ### 2. 克隆项目
 
@@ -181,102 +184,6 @@ mvn spring-boot:run
 ```
 
 启动后访问 `http://localhost:8080` 即可使用。
-
-## 功能扩展
-
-### 自定义 Agent
-
-在 `config/agent/` 目录下新建文件夹，添加 `agent.json` 和 `prompt.md`：
-
-```json
-{
-  "id": "my-agent",
-  "name": "My Custom Agent",
-  "description": "自定义 Agent 描述",
-  "model": "main-pro",
-  "systemPromptFile": "./config/agent/my_agent/prompt.md",
-  "privatize": true,
-  "toolkits": "*",
-  "toolMode": "dynamic",
-  "plugins": [
-    {
-      "class": "com.bin.actx.plugin.core.memory.SessionMemoryPlugin"
-    },
-    {
-      "class": "com.bin.actx.plugin.core.file.FilePlugin"
-    }
-  ]
-}
-```
-
-**关键字段说明：**
-
-| 字段                 | 说明                                      |
-|--------------------|-----------------------------------------|
-| `id`               | Agent 唯一标识                              |
-| `model`            | 引用的模型 ID，需在 `model.json` 中预先定义          |
-| `systemPromptFile` | 系统提示词文件路径，支持 Markdown 格式                |
-| `privatize`        | 是否为私有 Agent（私有 Agent 不会出现在公共 Agent 列表中） |
-| `toolkits`         | 可用工具集，`"*"` 表示所有工具，也可指定具体工具名称           |
-| `toolMode`         | 工具模式：`dynamic` 动态加载 / `static` 静态全量加载   |
-| `plugins`          | 插件列表，按顺序加载执行                            |
-
-### 接入 MCP 工具
-
-编辑 `config/mcp.json`，添加 MCP Server 配置即可为 Agent 扩展外部工具能力：
-
-```json
-{
-  "mcpServers": {
-    "my-mcp-server": {
-      "url": "http://localhost:3000/mcp",
-      "description": "我的 MCP 工具服务器"
-    }
-  }
-}
-```
-
-### 自定义插件
-
-实现 `Plugin` 接口，在 Agent 的 `plugins` 配置中引用即可。插件可拦截 Agent 执行流程、注入上下文信息、扩展工具集。
-
-内置插件一览：
-
-| 插件                    | 说明                      |
-|-----------------------|-------------------------|
-| `SessionMemoryPlugin` | 会话记忆管理，自动维护多轮对话上下文      |
-| `FilePlugin`          | 文件管理，支持文件上传、解析与内容提取     |
-| `SandboxPlugin`       | 沙箱代码执行，在安全隔离环境中运行代码     |
-| `McpPlugin`           | MCP 工具接入，连接外部 MCP 工具服务器 |
-| `SummaryPlugin`       | 对话与任务总结，自动提炼关键信息        |
-| `TaskPlugin`          | 任务管理，支持任务的创建、跟踪与协调      |
-| `BusinessReferPlugin` | 业务知识引用，自动关联已发现的企业业务关系   |
-
-### 配置场景路由
-
-在 `config/actx.json` 中配置不同场景使用的 Agent：
-
-```json
-{
-  "scenes": {
-    "chat": {
-      "agent": "chat-agent"
-    },
-    "taskEvaluate": {
-      "agent": "task-evaluate-agent"
-    },
-    "taskPlanning": {
-      "agent": "task-planning-agent"
-    },
-    "taskDispatcher": {
-      "agent": "task-dispatcher-agent"
-    },
-    "businessDiscover": {
-      "agent": "business-discover-agent"
-    }
-  }
-}
-```
 
 ## 项目结构
 

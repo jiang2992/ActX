@@ -4,6 +4,8 @@ import org.springframework.ai.chat.messages.AssistantMessage;
 
 /**
  * 模型消息获取器抽象类，用于不同厂商模型的响应消息分析、获取等。
+ * <br/>
+ * 为什么需要这个类？因为部分模型返回思考内容所使用的字段不一样。
  *
  * @author Bin
  * @since 2026/6/26 10:56
