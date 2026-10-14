@@ -158,7 +158,10 @@ cd ActX
 }
 ```
 
-> 支持 OpenAI、智谱 AI、DeepSeek 等多种模型供应商，均兼容 OpenAI 协议格式。
+> 1. 目前支持 OpenAi、ZhipuAi、Deepseek，如需其他模型供应商，需添加SpringAi对应实现，然后实现ModelFactory接口。
+> 2. 如果使用的是 TokenPlan 之类的套餐，建议直接使用 OpenAi 接口即可。
+> 3. 建议至少保留 main-pro、main-pro-json、main-pro-unthink 三种模型配置，如果实在没有，可以只保留 main-pro（需要修改各个Agent的模型引用）。
+> 4. 如果需要使用业务知识认知，必须配置 embedding-model。
 
 ### 4. 配置数据源（可选）
 
@@ -176,6 +179,8 @@ cd ActX
   }
 }
 ```
+
+> 如果需要使用业务知识认知，必须配置数据源。
 
 ### 5. 启动应用
 
