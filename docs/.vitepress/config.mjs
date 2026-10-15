@@ -2,12 +2,11 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   // 网站基础信息
-  title: 'ACTX',
-  description: 'ACTX Documentation',
+  title: 'ActX',
+  description: 'ActX Documentation',
 
-  // 如果仓库名是 github-actx，保留此配置
   // 如果使用自定义域名，后续再调整
-  base: '/github-actx/',
+  base: '/ActX/',
 
   // 本地搜索
   themeConfig: {
@@ -21,7 +20,7 @@ export default defineConfig({
       { text: '快速开始', link: '/getting-started' },
       {
         text: 'GitHub',
-        link: 'https://github.com/你的用户名/github-actx'
+        link: 'https://github.com/jiang2992/ActX'
       }
     ],
 
@@ -51,8 +50,8 @@ export default defineConfig({
     en: {
       label: 'English',
       lang: 'en-US',
-      title: 'ACTX',
-      description: 'ACTX Documentation'
+      title: 'ActX',
+      description: 'ActX Documentation'
     }
   }
 })
