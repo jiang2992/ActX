@@ -111,6 +111,9 @@ ActX 是一个基于 Spring Boot + Spring AI 构建的 **Java 通用业务智能
 | **扩展插件**   | 通过统一标准接口实现智能体的能力扩展，不同Agent可以配置不同的插件                                  |
 | **消息通道**   | 消息通道扩展支持，由消息事件驱动，支持快速整合飞书、钉钉、微信或其他企业内部系统                             |
 
+## 系统架构
+> 待补充~
+
 ## 快速开始
 
 ### 1. 环境要求
@@ -182,13 +185,25 @@ cd ActX
 
 > 如果需要使用业务知识认知，必须配置数据源。
 
-### 5. 启动应用
+### 5. 其他依赖（可选）
+在 `env` 目录下包含了 Neo4j 和 OpenSandbox 相关的配置文件。 
+- neo4j/docker-compose.yml: 默认情况下，直接 `docker-compose up -d` 即可。
+- opensandbox/sandbox.toml: 确保已经安装了 OpenSandbox 的情况下，修改 `allowed_host_paths` 配置，确保与 `application.yml` 中 `actx.storage.file.dir` 配置的路径一致，然后通过 `opensandbox-server --config ./env/opensandbox/sandbox.toml` 启动。
+
+
+### 6. 启动应用
 
 ```bash
 mvn spring-boot:run
 ```
 
 启动后访问 `http://localhost:8080` 即可使用。
+
+## 开发文档
+
+扩展能力是 ActX 的一大核心优势，支持任何功能扩展或二次开发。
+<br/>
+完整开发文档：[ActX 开发文档](https://jiang2992.github.io/ActX/)
 
 ## 项目结构
 
