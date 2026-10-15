@@ -32,6 +32,12 @@ target/
 ### Mac OS ###
 .DS_Store
 
+### Node ###
+node_modules/
+package-lock.json
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+
 ### Claude ###
 .claude/
 /db/
