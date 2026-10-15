@@ -7,10 +7,18 @@ export default defineConfig({
 
   base: '/ActX/',
 
+  head: [
+    ['link', {
+      rel: 'icon',
+      type: 'image/png',
+      href: 'favicon.png'
+    }]
+  ],
+
   // 全局主题配置
   themeConfig: {
     // 导航栏 Logo
-    logo: '/assets/logo.png',
+    logo: '/favicon.png',
 
     search: {
       provider: 'local'

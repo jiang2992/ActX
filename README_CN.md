@@ -29,7 +29,7 @@ ActX
 	</a>
 </p>
 
-##### 语言： 中文 | [English](README_EN.md)
+##### 语言： 中文 | [English](README.md)
 
 <hr />
 
@@ -53,7 +53,7 @@ ActX 是一个基于 Spring Boot + Spring AI 构建的 **Java 通用业务智能
 - Agent 支持自由管理，依次是 场景 -> Agent -> 模型。
 
 <p align="center">
-<img src="docs/assets/功能展示-Agent查询.png" />
+<img src="docs/public/assets/功能展示-Agent查询.png" />
 </p>
 
 <hr/>
@@ -64,8 +64,8 @@ ActX 是一个基于 Spring Boot + Spring AI 构建的 **Java 通用业务智能
 - 主动向用户确认推测结果，协助完成业务知识的沉淀。
 
 <p align="center">
-<img src="docs/assets/功能展示-知识推测.png" />
-<img src="docs/assets/功能展示-业务认知.png" />
+<img src="docs/public/assets/功能展示-知识推测.png" />
+<img src="docs/public/assets/功能展示-业务认知.png" />
 </p>
 
 <hr/>
@@ -76,8 +76,8 @@ ActX 是一个基于 Spring Boot + Spring AI 构建的 **Java 通用业务智能
 - 数据网关三层语句安全检测，同时支持租户控制、权限控制等。
 
 <p align="center">
-<img src="docs/assets/功能展示-知识查询.png" />
-<img src="docs/assets/功能展示-neo4j.png" />
+<img src="docs/public/assets/功能展示-知识查询.png" />
+<img src="docs/public/assets/功能展示-neo4j.png" />
 </p>
 
 <hr/>
@@ -89,7 +89,7 @@ ActX 是一个基于 Spring Boot + Spring AI 构建的 **Java 通用业务智能
 - 任务流程：评估 → 规划 → 调度 → 执行 → 评审 → 总结。
 
 <p align="center">
-<img src="docs/assets/功能展示-复杂任务.png" />
+<img src="docs/public/assets/功能展示-复杂任务.png" />
 </p>
 
 <hr/>

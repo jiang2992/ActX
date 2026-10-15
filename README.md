@@ -1,5 +1,5 @@
 <h1 align="center" style="text-align:center;">
-<img src="src/main/resources/static/img/logo.png" width="128" />
+<img src="docs/public/favicon.png" width="128" />
 <br />
 ActX
 </h1>
@@ -53,7 +53,7 @@ Additionally, ActX supports proactive enterprise business cognition — autonomo
 - Agents support flexible management, following the hierarchy: Scenario -> Agent -> Model.
 
 <p align="center">
-<img src="docs/assets/功能展示-Agent查询.png" />
+<img src="docs/public/assets/功能展示-Agent查询.png" />
 </p>
 
 <hr/>
@@ -64,8 +64,8 @@ Additionally, ActX supports proactive enterprise business cognition — autonomo
 - Proactively confirms speculation results with users, assisting in the accumulation of business knowledge.
 
 <p align="center">
-<img src="docs/assets/功能展示-知识推测.png" />
-<img src="docs/assets/功能展示-业务认知.png" />
+<img src="docs/public/assets/功能展示-知识推测.png" />
+<img src="docs/public/assets/功能展示-业务认知.png" />
 </p>
 
 <hr/>
@@ -76,8 +76,8 @@ Additionally, ActX supports proactive enterprise business cognition — autonomo
 - Three-layer statement security detection at the data gateway, with support for tenant control, permission control, and more.
 
 <p align="center">
-<img src="docs/assets/功能展示-知识查询.png" />
-<img src="docs/assets/功能展示-neo4j.png" />
+<img src="docs/public/assets/功能展示-知识查询.png" />
+<img src="docs/public/assets/功能展示-neo4j.png" />
 </p>
 
 <hr/>
@@ -89,7 +89,7 @@ Additionally, ActX supports proactive enterprise business cognition — autonomo
 - Task workflow: Evaluation → Planning → Dispatch → Execution → Review → Summary.
 
 <p align="center">
-<img src="docs/assets/功能展示-复杂任务.png" />
+<img src="docs/public/assets/功能展示-复杂任务.png" />
 </p>
 
 <hr/>
