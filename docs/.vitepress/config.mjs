@@ -7,7 +7,7 @@ export default defineConfig({
 
   base: '/ActX/',
 
-  // 本地搜索
+  // 全局主题配置
   themeConfig: {
     // 导航栏 Logo
     logo: '/assets/logo.png',
@@ -19,44 +19,58 @@ export default defineConfig({
     // 社交链接
     socialLinks: [
       { icon: 'github', link: 'https://github.com/jiang2992/ActX' }
-    ],
-
-    // 顶部导航
-    nav: [
-      { text: '首页', link: '/' },
-      { text: '开发文档', link: '/info' },
-      {
-        text: 'GitHub',
-        link: 'https://github.com/jiang2992/ActX'
-      }
-    ],
-
-    // 中文侧边栏
-    sidebar: [
-      {
-        text: '开发文档',
-        items: [
-          { text: '项目介绍', link: '/info' },
-        ]
-      }
-    ],
-
-    // 中英文切换入口
-    languageMenuLabel: '切换语言',
-    returnToTopLabel: '返回顶部'
+    ]
   },
 
   // 中英文站点配置
   locales: {
     root: {
       label: '简体中文',
-      lang: 'zh-CN'
+      lang: 'zh-CN',
+      link: '/',
+      themeConfig: {
+        nav: [
+          { text: '首页', link: '/' },
+          { text: '开发文档', link: '/info' },
+          {
+            text: 'GitHub',
+            link: 'https://github.com/jiang2992/ActX'
+          }
+        ],
+        sidebar: [
+          {
+            text: '开发文档',
+            items: [
+              { text: '项目介绍', link: '/info' },
+            ]
+          }
+        ]
+      }
     },
     en: {
       label: 'English',
       lang: 'en-US',
+      link: '/en/',
       title: 'ActX',
-      description: 'ActX - Java General-Purpose Business Agent Application'
+      description: 'ActX - Java General-Purpose Business Agent Application',
+      themeConfig: {
+        nav: [
+          { text: 'Home', link: '/en/' },
+          { text: 'Documentation', link: '/en/info' },
+          {
+            text: 'GitHub',
+            link: 'https://github.com/jiang2992/ActX'
+          }
+        ],
+        sidebar: [
+          {
+            text: 'Documentation',
+            items: [
+              { text: 'Introduction', link: '/en/info' },
+            ]
+          }
+        ]
+      }
     }
   }
 })

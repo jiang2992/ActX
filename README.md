@@ -203,7 +203,7 @@ After startup, visit `http://localhost:8080` to use.
 
 Extensibility is a core advantage of ActX, supporting any feature extension or secondary development.
 <br/>
-Full documentation: [ActX Documentation](https://jiang2992.github.io/ActX/)
+Full documentation: [ActX Documentation](https://jiang2992.github.io/ActX/en/)
 
 ## Project Structure
 
