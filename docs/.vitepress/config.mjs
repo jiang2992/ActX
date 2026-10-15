@@ -3,21 +3,28 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   // 网站基础信息
   title: 'ActX',
-  description: 'ActX Documentation',
+  description: 'ActX - Java 通用业务智能体应用，轻量级、高扩展、无侵入',
 
-  // 如果使用自定义域名，后续再调整
   base: '/ActX/',
 
   // 本地搜索
   themeConfig: {
+    // 导航栏 Logo
+    logo: '/assets/logo.png',
+
     search: {
       provider: 'local'
     },
 
+    // 社交链接
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/jiang2992/ActX' }
+    ],
+
     // 顶部导航
     nav: [
       { text: '首页', link: '/' },
-      { text: '快速开始', link: '/getting-started' },
+      { text: '开发文档', link: '/info' },
       {
         text: 'GitHub',
         link: 'https://github.com/jiang2992/ActX'
@@ -27,11 +34,9 @@ export default defineConfig({
     // 中文侧边栏
     sidebar: [
       {
-        text: '开始使用',
+        text: '开发文档',
         items: [
-          { text: '项目介绍', link: '/' },
-          { text: '快速开始', link: '/getting-started' },
-          { text: '安装部署', link: '/installation' }
+          { text: '项目介绍', link: '/info' },
         ]
       }
     ],
@@ -51,7 +56,7 @@ export default defineConfig({
       label: 'English',
       lang: 'en-US',
       title: 'ActX',
-      description: 'ActX Documentation'
+      description: 'ActX - Java General-Purpose Business Agent Application'
     }
   }
 })
