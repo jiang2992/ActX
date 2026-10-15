@@ -27,6 +27,9 @@ ActX
     <a target="_blank" href='https://github.com/jiang2992/ActX/stargazers'>
 		<img src="https://img.shields.io/github/stars/jiang2992/ActX.svg?style=flat&logo=github" alt="github star"/>
 	</a>
+    <a target="_blank" href='https://gitee.com/jiang2992/act-x/stargazers'>
+        <img src='https://gitee.com/jiang2992/act-x/badge/star.svg?theme=gvp' alt='gitee star'/>
+	</a>
 </p>
 
 ##### 语言： 中文 | [English](README.md)
@@ -201,9 +204,8 @@ mvn spring-boot:run
 
 ## 开发文档
 
-扩展能力是 ActX 的一大核心优势，支持任何功能扩展或二次开发。
-<br/>
 完整开发文档：[ActX 开发文档](https://jiang2992.github.io/ActX/)
+> 扩展能力是 ActX 的一大核心优势，支持任何功能扩展或二次开发。
 
 ## 项目结构
 

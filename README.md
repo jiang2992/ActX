@@ -27,6 +27,9 @@ ActX
     <a target="_blank" href='https://github.com/jiang2992/ActX/stargazers'>
 		<img src="https://img.shields.io/github/stars/jiang2992/ActX.svg?style=flat&logo=github" alt="github star"/>
 	</a>
+    <a target="_blank" href='https://gitee.com/jiang2992/act-x/stargazers'>
+        <img src='https://gitee.com/jiang2992/act-x/badge/star.svg?theme=gvp' alt='gitee star'/>
+	</a>
 </p>
 
 ##### Language: [中文](README_CN.md) | English
@@ -201,9 +204,8 @@ After startup, visit `http://localhost:8080` to use.
 
 ## Documentation
 
-Extensibility is a core advantage of ActX, supporting any feature extension or secondary development.
-<br/>
 Full documentation: [ActX Documentation](https://jiang2992.github.io/ActX/en/)
+> Extensibility is a core advantage of ActX, supporting any feature extension or secondary development.
 
 ## Project Structure
 
