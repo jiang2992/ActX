@@ -115,7 +115,11 @@ ActX 是一个基于 Spring Boot + Spring AI 构建的 **Java 通用业务智能
 | **消息通道**   | 消息通道扩展支持，由消息事件驱动，支持快速整合飞书、钉钉、微信或其他企业内部系统                             |
 
 ## 系统架构
-> 待补充~
+
+<p align="center">
+<img src="docs/public/assets/应用架构.drawio.png" />
+应用架构图
+</p>
 
 ## 快速开始
 

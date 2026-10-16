@@ -114,8 +114,13 @@ Additionally, ActX supports proactive enterprise business cognition — autonomo
 | **Extension Plugins** | Extends agent capabilities through standardized interfaces; different agents can be configured with different plugins |
 | **Message Channel** | Message channel extension support, driven by message events; supports quick integration with Feishu, DingTalk, WeChat, or other enterprise internal systems |
 
+
 ## System Architecture
-> To be completed~
+
+<p align="center">
+<img src="docs/public/assets/应用架构.drawio.png" />
+Application Architecture Diagram
+</p>
 
 ## Quick Start
 
