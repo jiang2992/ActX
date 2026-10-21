@@ -53,8 +53,8 @@ export default defineConfig({
               {
                 text: '安装部署',
                 items: [
-                  {text: '快速运行'},
-                  {text: '图数据库'},
+                  {text: '快速运行', link: '/quick-start'},
+                  {text: '图数据库', link: '/graph-database'},
                   {text: '配置沙箱'},
                   {text: '日志配置'},
                 ]
@@ -110,7 +110,7 @@ export default defineConfig({
               {
                 text: 'Installation & Deployment',
                 items: [
-                  {text: 'Quick Start'},
+                  {text: 'Quick Start', link: '/en/quick-start'},
                   {text: 'Graph Database'},
                   {text: 'Sandbox Configuration'},
                   {text: 'Log Configuration'},
