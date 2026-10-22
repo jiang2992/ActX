@@ -55,8 +55,8 @@ export default defineConfig({
                 items: [
                   {text: '快速运行', link: '/quick-start'},
                   {text: '图数据库', link: '/graph-database'},
-                  {text: '配置沙箱'},
-                  {text: '日志配置'},
+                  {text: '配置沙箱', link: '/sandbox-config'},
+                  {text: '日志配置', link: '/log-config'},
                 ]
               },
               {text: '会话管理'},
