@@ -59,11 +59,11 @@ export default defineConfig({
                   {text: '日志配置', link: '/log-config'},
                 ]
               },
-              {text: '会话管理'},
-              {text: '文件管理'},
+              {text: '会话管理', link: '/session-manage'},
+              {text: '文件管理', link: '/file-manage'},
               {text: '复杂任务'},
               {text: '业务认知'},
-              {text: '沙箱管理'},
+              {text: '沙箱管理', link: '/sandbox-manage'},
               {
                 text: '能力扩展',
                 items: [
