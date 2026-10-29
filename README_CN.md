@@ -33,6 +33,7 @@ ActX
 </p>
 
 ##### 语言： 中文 | [English](README.md)
+##### 完整开发文档：[ActX 开发文档](https://jiang2992.github.io/ActX/info.html)
 
 <hr />
 
@@ -208,7 +209,7 @@ mvn spring-boot:run
 
 ## 开发文档
 
-完整开发文档：[ActX 开发文档](https://jiang2992.github.io/ActX/)
+完整开发文档：[ActX 开发文档](https://jiang2992.github.io/ActX/info.html)
 > 扩展能力是 ActX 的一大核心优势，支持任何功能扩展或二次开发。
 
 ## 项目结构

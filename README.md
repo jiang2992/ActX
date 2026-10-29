@@ -33,6 +33,7 @@ ActX
 </p>
 
 ##### Language: [中文](README_CN.md) | English
+##### Full documentation: [ActX Documentation](https://jiang2992.github.io/ActX/en/info.html)
 
 <hr />
 
@@ -209,7 +210,7 @@ After startup, visit `http://localhost:8080` to use.
 
 ## Documentation
 
-Full documentation: [ActX Documentation](https://jiang2992.github.io/ActX/en/)
+Full documentation: [ActX Documentation](https://jiang2992.github.io/ActX/en/info.html)
 > Extensibility is a core advantage of ActX, supporting any feature extension or secondary development.
 
 ## Project Structure
