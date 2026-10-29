@@ -61,7 +61,7 @@ export default defineConfig({
               },
               {text: '会话管理', link: '/session-manage'},
               {text: '文件管理', link: '/file-manage'},
-              {text: '复杂任务'},
+              {text: '复杂任务', link: '/task-flow'},
               {text: '业务认知'},
               {text: '沙箱管理', link: '/sandbox-manage'},
               {
