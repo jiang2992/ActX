@@ -62,26 +62,26 @@ export default defineConfig({
               {text: '会话管理', link: '/session-manage'},
               {text: '文件管理', link: '/file-manage'},
               {text: '复杂任务', link: '/task-flow'},
-              {text: '业务认知'},
+              {text: '业务认知', link: '/business-discover'},
               {text: '沙箱管理', link: '/sandbox-manage'},
               {
                 text: '能力扩展',
                 items: [
                   {text: '开发建议'},
-                  {text: '工具包'},
-                  {text: '模型配置'},
-                  {text: 'Agent配置'},
-                  {text: 'MCP配置'},
-                  {text: '消息通道'},
-                  {text: '消息片段'},
-                  {text: '扩展插件'},
-                  {text: '数据源'},
-                  {text: 'SQL解析与校验'},
-                  {text: 'SQL重写（权限控制）'},
-                  {text: '常见问题'}
+                  {text: '工具包', link: '/extension-toolkit'},
+                  {text: '模型配置', link: '/extension-model'},
+                  {text: 'Agent配置', link: '/extension-agent'},
+                  {text: 'MCP配置', link: '/extension-mcp'},
+                  {text: '消息通道', link: '/extension-channel'},
+                  {text: '消息片段', link: '/extension-fragment'},
+                  {text: '扩展插件', link: '/extension-plugin'},
+                  {text: '数据源', link: '/extension-datasource'},
+                  {text: 'SQL解析与校验', link: '/extension-sql'},
+                  {text: 'SQL重写（权限控制）', link: '/extension-rewrite'},
+                  {text: '常见问题', link: '/extension-faq'}
                 ]
               },
-              {text: '关于ActX'}
+              {text: '关于ActX', link: '/about'}
             ],
           }
         ]
